@@ -3,6 +3,7 @@ package br.com.hotel.eclipsehotel;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -258,7 +259,7 @@ public class CustomerIntegrationTest {
 	
 	@Test
 	@Transactional
-	public void test_deleteCustomer_returns200() throws Exception{
+	public void test_deleteCustomerById_returns200() throws Exception{
 		Address address1 = new Address();
 		address1.setZipCode("33658974");
 		address1.setStreet("Rua do Catete");
@@ -272,14 +273,47 @@ public class CustomerIntegrationTest {
 		customer1.setAddress(address1);
 
 		repository.saveAndFlush(customer1);
+		
 		mvc.perform(delete("/deletecustomer/"+customer1.getId())).andExpect(status().isNoContent());
 	}
 	
 	@Test
 	@Transactional
-	public void test_deleteCustomer_customerNotFound_returns404() throws Exception{
+	public void test_deleteCustomerById_customerNotFound_returns404() throws Exception{
 		mvc.perform(delete("/deletecustomer/1")).andExpect(status().isNotFound());
+	}
+	
+	@Test
+	@Transactional
+	public void test_updateCustomer_returns200() throws Exception{
+		Address address1 = new Address();
+		address1.setZipCode("33658974");
+		address1.setStreet("Rua do Catete");
+		address1.setNeighborhood("Catete");
+		address1.setState("Rio de Janeiro");
 
+		Customer customer1 = new Customer();
+		customer1.setPhone("(21)635268547");
+		customer1.setEmail("marcus@email.com");
+		customer1.setName("Marcus");
+		customer1.setAddress(address1);
+		repository.saveAndFlush(customer1);
+		
+		Address address2 = new Address();
+		address2.setZipCode("41785697");
+		address2.setStreet("Rua ");
+		address2.setNeighborhood("Vila Gustavo");
+		address2.setState("São Paulo");
+
+		Customer customer2 = new Customer();
+		customer2.setPhone("(21)523687412");
+		customer2.setEmail("hanna@email.com");
+		customer2.setName("Hanna");
+		customer2.setAddress(address2);
+		
+		mvc.perform(put("/updatecustomer/"+customer1.getId()).content(mapper.writeValueAsString(customer2))
+		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		.andExpect(jsonPath("$.name").value("Hanna")).andExpect(jsonPath("$.email").value("hanna@email.com"));
 	}
 	
 }
