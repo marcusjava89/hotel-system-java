@@ -22,7 +22,7 @@ public class CustomerService {
 	
 	@Transactional
 	public Customer saveCustomer(Customer customer) {
-		if(repository.findByEmail(customer.getEmail()).isPresent() == true) {
+		if(repository.findByEmail(customer.getEmail()).isPresent()) {
 			throw new ExistentEmailException();
 		}
 		

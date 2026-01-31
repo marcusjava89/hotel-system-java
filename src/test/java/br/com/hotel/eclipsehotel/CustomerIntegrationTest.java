@@ -1,5 +1,6 @@
 package br.com.hotel.eclipsehotel;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,7 +42,7 @@ public class CustomerIntegrationTest {
 
 	@Test
 	@Transactional
-	public void test_toListCustomers_returns_200() throws Exception {
+	public void test_toListCustomers_returns200() throws Exception {
 		Address address1 = new Address();
 		address1.setZipCode("33658974");
 		address1.setStreet("Rua do Catete");
@@ -75,7 +76,7 @@ public class CustomerIntegrationTest {
 	}
 
 	@Test
-	public void test_toListCustomers_emptyList_returns_200() throws Exception {
+	public void test_toListCustomers_emptyList_returns200() throws Exception {
 		mvc.perform(get("/tolist")).andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(0));
 	}
 
@@ -253,6 +254,32 @@ public class CustomerIntegrationTest {
 		repository.saveAndFlush(customer1);
 		
 		mvc.perform(get("/findcustomer/2")).andExpect(status().isNotFound());
+	}
+	
+	@Test
+	@Transactional
+	public void test_deleteCustomer_returns200() throws Exception{
+		Address address1 = new Address();
+		address1.setZipCode("33658974");
+		address1.setStreet("Rua do Catete");
+		address1.setNeighborhood("Catete");
+		address1.setState("Rio de Janeiro");
+
+		Customer customer1 = new Customer();
+		customer1.setPhone("(21)635268547");
+		customer1.setEmail("marcus@email.com");
+		customer1.setName("Marcus");
+		customer1.setAddress(address1);
+
+		repository.saveAndFlush(customer1);
+		mvc.perform(delete("/deletecustomer/"+customer1.getId())).andExpect(status().isNoContent());
+	}
+	
+	@Test
+	@Transactional
+	public void test_deleteCustomer_customerNotFound_returns404() throws Exception{
+		mvc.perform(delete("/deletecustomer/1")).andExpect(status().isNotFound());
+
 	}
 	
 }
