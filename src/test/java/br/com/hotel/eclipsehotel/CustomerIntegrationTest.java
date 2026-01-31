@@ -316,6 +316,26 @@ public class CustomerIntegrationTest {
 		.andExpect(jsonPath("$.name").value("Hanna")).andExpect(jsonPath("$.email").value("hanna@email.com"));
 	}
 	
+	@Test
+	@Transactional
+	public void test_updateCustomer_customerNotFound_returns400() throws Exception{
+
+		Address address2 = new Address();
+		address2.setZipCode("41785697");
+		address2.setStreet("Rua ");
+		address2.setNeighborhood("Vila Gustavo");
+		address2.setState("São Paulo");
+
+		Customer customer2 = new Customer();
+		customer2.setPhone("(21)523687412");
+		customer2.setEmail("hanna@email.com");
+		customer2.setName("Hanna");
+		customer2.setAddress(address2);
+		
+		mvc.perform(put("/updatecustomer/1").content(mapper.writeValueAsString(customer2))
+		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+	
 }
 
 
