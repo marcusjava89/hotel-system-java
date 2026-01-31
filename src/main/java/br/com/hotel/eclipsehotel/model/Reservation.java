@@ -39,19 +39,13 @@ public class Reservation {
 	private Room room;
 	
 	@Column(name = "checkin", nullable = false)
-	@Setter(AccessLevel.NONE)
 	private LocalDateTime checkin;
 	
 	@Column(name = "checkout", nullable = true)
-	private LocalDateTime checkout; /*We deal with this part in ReservationService*/
+	private LocalDateTime checkout; 
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false)
 	private ReservationStatus status;
-	
-	@PrePersist
-	public void prePersist() {
-		checkin = LocalDateTime.now();
-	}
 
 }

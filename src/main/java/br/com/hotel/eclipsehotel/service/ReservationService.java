@@ -23,9 +23,8 @@ public class ReservationService {
 	
 	@Transactional
 	public Reservation openReservation(Reservation reservation) {
-		
 		reservation.setStatus(ReservationStatus.SCHEDULED);
-		Reservation opened = repository.save(reservation);
+		Reservation opened = repository.saveAndFlush(reservation);
 		return opened;
 	}
 	
@@ -33,11 +32,16 @@ public class ReservationService {
 	public Reservation closeReservation(Long id) {
 		Reservation reservation = repository.findById(id).orElseThrow(() -> new ReservationNotFound(id));
 		
-		reservation.setCheckout(LocalDateTime.now());
-		reservation.setStatus(ReservationStatus.FINISHED);
-		Reservation closed = repository.saveAndFlush(reservation);
+		if(reservation.getStatus().equals(ReservationStatus.IN_USE)) {
+			reservation.setCheckout(LocalDateTime.now());
+			reservation.setStatus(ReservationStatus.FINISHED);
+			Reservation closed = repository.saveAndFlush(reservation);
+			
+			return closed;
+		}else {
+			throw new IllegalStateException("Reservation must be IN_USE to be closed");
+		}
 		
-		return closed;
 	}
 	
 	public Long reservationTime(Long id) {
@@ -61,7 +65,7 @@ public class ReservationService {
 		
 		List<Reservation> reservations = repository.findAll();  
 		for (Reservation r: reservations) {
-			if (r.getStatus() == ReservationStatus.IN_USE || r.getStatus() == ReservationStatus.SCHEDULED) {
+			if (r.getStatus() == ReservationStatus.IN_USE) {
 				rooms.add(r.getRoom());
 			}
 		}

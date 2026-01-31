@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.hotel.eclipsehotel.model.Reservation;
 import br.com.hotel.eclipsehotel.service.ReservationService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RestController @RequiredArgsConstructor
