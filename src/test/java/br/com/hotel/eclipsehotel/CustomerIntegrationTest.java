@@ -180,6 +180,7 @@ public class CustomerIntegrationTest {
 	}
 	
 	@Test
+	@Transactional
 	public void test_findCustomerById_returns200() throws Exception{
 		Address address1 = new Address();
 		address1.setZipCode("33658974");
