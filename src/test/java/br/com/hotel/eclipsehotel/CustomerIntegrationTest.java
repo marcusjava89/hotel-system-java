@@ -196,7 +196,30 @@ public class CustomerIntegrationTest {
 
 		repository.saveAndFlush(customer1);
 		
-		mvc.perform(get("/findcustomer/"+customer1.getId())).andExpect(status().isOk());
+		mvc.perform(get("/findcustomer/"+customer1.getId())).andExpect(status().isOk()).
+		andExpect(jsonPath("$.name").value("Marcus")).andExpect(jsonPath("$.email").value("marcus@email.com"))
+		.andExpect(jsonPath("$.phone").value("(21)635268547"));
+	}
+	
+	@Test
+	@Transactional
+	public void test_findCustomerById_customerNotFound_returns404() throws Exception{
+		Address address1 = new Address();
+		address1.setZipCode("33658974");
+		address1.setStreet("Rua do Catete");
+		address1.setNeighborhood("Catete");
+		address1.setState("Rio de Janeiro");
+
+		Customer customer1 = new Customer();
+		customer1.setPhone("(21)635268547");
+		customer1.setEmail("marcus@email.com");
+		customer1.setName("Marcus");
+		customer1.setAddress(address1);
+
+		repository.saveAndFlush(customer1);
+		
+		mvc.perform(get("/findcustomer/2")).andExpect(status().isNotFound());
+		
 	}
 	
 }
