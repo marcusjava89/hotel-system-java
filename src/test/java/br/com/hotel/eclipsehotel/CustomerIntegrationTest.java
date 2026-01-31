@@ -33,6 +33,8 @@ public class CustomerIntegrationTest {
 	
 	@Test
 	public void toListCustomers_returns_200() throws Exception{
+		repository.deleteAll();
+		
 		Address address1 = new Address();
 	    address1.setZipCode("33658974");
 	    address1.setStreet("Rua do Catete");
@@ -60,7 +62,9 @@ public class CustomerIntegrationTest {
 		customer2.setAddress(address2);
 		repository.saveAndFlush(customer2);	
 		
-		mvc.perform(get("/tolist")).andExpect(status().isOk());
+		mvc.perform(get("/tolist")).andExpect(status().isOk())
+		.andExpect(jsonPath("$[0].name").value("Marcus"))
+		.andExpect(jsonPath("$[1].name").value("Hanna")).andExpect(jsonPath("$.length()").value(2));
 		
 	}
 }
