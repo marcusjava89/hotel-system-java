@@ -176,7 +176,41 @@ public class CustomerIntegrationTest {
 		customer1.setAddress(null);
 		
 		mvc.perform(post("/savecustomer").content(mapper.writeValueAsString(customer1))
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());	
+		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());	
+	}
+	
+	@Test
+	@Transactional
+	public void test_saveCustomer_duplicateEmailAddress_returns409() throws Exception{
+		Address address1 = new Address();
+		address1.setZipCode("33658974");
+		address1.setStreet("Rua do Catete");
+		address1.setNeighborhood("Catete");
+		address1.setState("Rio de Janeiro");
+
+		Customer customer1 = new Customer();
+		customer1.setPhone("(21)635268547");
+		customer1.setEmail("marcus@email.com");
+		customer1.setName("Marcus");
+		customer1.setAddress(address1);
+
+		repository.saveAndFlush(customer1);
+
+		Address address2 = new Address();
+		address2.setZipCode("41785697");
+		address2.setStreet("Avenida Paulista");
+		address2.setNeighborhood("Pinheiros");
+		address2.setState("São Paulo");
+
+		Customer customer2 = new Customer();
+		customer2.setPhone("(21)523687412");
+		customer2.setEmail("marcus@email.com");
+		customer2.setName("Hanna");
+		customer2.setAddress(address2);
+		
+		mvc.perform(post("/savecustomer").content(mapper.writeValueAsString(customer2))
+		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isConflict());
+		
 	}
 	
 	@Test
@@ -219,7 +253,6 @@ public class CustomerIntegrationTest {
 		repository.saveAndFlush(customer1);
 		
 		mvc.perform(get("/findcustomer/2")).andExpect(status().isNotFound());
-		
 	}
 	
 }

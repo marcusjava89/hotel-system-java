@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(ExistentEmailException.class)
 	public ResponseEntity<String> handlerExistentEmailException(ExistentEmailException ex){
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
 	}
 	
 	@ExceptionHandler(RoomNotFound.class)
