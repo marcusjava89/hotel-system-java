@@ -103,6 +103,7 @@ public class CustomerIntegrationTest {
 	@ParameterizedTest
 	@NullAndEmptySource
 	@ValueSource(strings = {" ", "ab", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12345678901"})
+	@Transactional
 	@DisplayName("Tests a empty, less then 3 words, more then 600 digits, names and return 400.")
 	public void test_saveCustomer_invalidName_returns400(String name) throws Exception{
 		Address address1 = new Address();
@@ -125,6 +126,7 @@ public class CustomerIntegrationTest {
 	@ParameterizedTest 
 	@NullAndEmptySource
 	@ValueSource(strings = {"com", " ", "marcus@marcus@"})
+	@Transactional
 	@DisplayName("Returns 400 when trying to save a customer with an invalid email adress.")
 	public void test_saveCustomer_invalidEmail_returns400(String email) throws Exception{
 		Address address1 = new Address();
@@ -162,6 +164,19 @@ public class CustomerIntegrationTest {
 		
 		mvc.perform(post("/savecustomer").content(mapper.writeValueAsString(customer1))
 		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());	
+	}
+	
+	@Test
+	@Transactional
+	public void test_saveCustomer_invalidAddress_returns400() throws Exception{
+		Customer customer1 = new Customer();
+		customer1.setPhone("(21)635268547");
+		customer1.setEmail("marcus@email.com");
+		customer1.setName("Marcus");
+		customer1.setAddress(null);
+		
+		mvc.perform(post("/savecustomer").content(mapper.writeValueAsString(customer1))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());	
 	}
 	
 }
