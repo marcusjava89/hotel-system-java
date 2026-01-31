@@ -41,7 +41,7 @@ public class CustomerIntegrationTest {
 
 	@Test
 	@Transactional
-	public void toListCustomers_returns_200() throws Exception {
+	public void test_toListCustomers_returns_200() throws Exception {
 		Address address1 = new Address();
 		address1.setZipCode("33658974");
 		address1.setStreet("Rua do Catete");
@@ -177,6 +177,25 @@ public class CustomerIntegrationTest {
 		
 		mvc.perform(post("/savecustomer").content(mapper.writeValueAsString(customer1))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());	
+	}
+	
+	@Test
+	public void test_findCustomerById_returns200() throws Exception{
+		Address address1 = new Address();
+		address1.setZipCode("33658974");
+		address1.setStreet("Rua do Catete");
+		address1.setNeighborhood("Catete");
+		address1.setState("Rio de Janeiro");
+
+		Customer customer1 = new Customer();
+		customer1.setPhone("(21)635268547");
+		customer1.setEmail("marcus@email.com");
+		customer1.setName("Marcus");
+		customer1.setAddress(address1);
+
+		repository.saveAndFlush(customer1);
+		
+		mvc.perform(get("/findcustomer/"+customer1.getId())).andExpect(status().isOk());
 	}
 	
 }
