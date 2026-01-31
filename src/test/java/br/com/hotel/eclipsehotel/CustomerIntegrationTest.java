@@ -5,7 +5,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -95,6 +99,71 @@ public class CustomerIntegrationTest {
 		.andExpect(jsonPath("$.name").value("Marcus"))
 		.andExpect(jsonPath("$.email").value("marcus@email.com"));
 	}
+	
+	@ParameterizedTest
+	@NullAndEmptySource
+	@ValueSource(strings = {" ", "ab", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12345678901"})
+	@DisplayName("Tests a empty, less then 3 words, more then 600 digits, names and return 400.")
+	public void test_saveCustomer_invalidName_returns400(String name) throws Exception{
+		Address address1 = new Address();
+		address1.setZipCode("33658974");
+		address1.setStreet("Rua do Catete");
+		address1.setNeighborhood("Catete");
+		address1.setState("Rio de Janeiro");
+
+		Customer customer1 = new Customer();
+		customer1.setPhone("(21)635268547");
+		customer1.setEmail("marcus@email.com");
+		customer1.setName(name);
+		customer1.setAddress(address1);
+		
+		mvc.perform(post("/savecustomer").content(mapper.writeValueAsString(customer1))
+		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		
+	}
+	
+	@ParameterizedTest 
+	@NullAndEmptySource
+	@ValueSource(strings = {"com", " ", "marcus@marcus@"})
+	@DisplayName("Returns 400 when trying to save a customer with an invalid email adress.")
+	public void test_saveCustomer_invalidEmail_returns400(String email) throws Exception{
+		Address address1 = new Address();
+		address1.setZipCode("33658974");
+		address1.setStreet("Rua do Catete");
+		address1.setNeighborhood("Catete");
+		address1.setState("Rio de Janeiro");
+
+		Customer customer1 = new Customer();
+		customer1.setPhone("(21)635268547");
+		customer1.setEmail(email);
+		customer1.setName("Marcus");
+		customer1.setAddress(address1);
+		
+		mvc.perform(post("/savecustomer").content(mapper.writeValueAsString(customer1))
+		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	}
+	
+	@ParameterizedTest 
+	@NullAndEmptySource
+	@ValueSource(strings = {" "})
+	@DisplayName("Returns 400 when trying to save a customer with an invalid email adress.")
+	public void test_saveCustomer_invalidPhoneNumber_returns400(String phone) throws Exception{
+		Address address1 = new Address();
+		address1.setZipCode("33658974");
+		address1.setStreet("Rua do Catete");
+		address1.setNeighborhood("Catete");
+		address1.setState("Rio de Janeiro");
+
+		Customer customer1 = new Customer();
+		customer1.setPhone(phone);
+		customer1.setEmail("marcus@marcus.com");
+		customer1.setName("Marcus");
+		customer1.setAddress(address1);
+		
+		mvc.perform(post("/savecustomer").content(mapper.writeValueAsString(customer1))
+		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());	
+	}
+	
 }
 
 
