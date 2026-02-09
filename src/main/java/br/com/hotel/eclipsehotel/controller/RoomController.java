@@ -22,32 +22,32 @@ public class RoomController {
 	
 	private final RoomService service;
 	
-	@GetMapping("/list")
+	@GetMapping("/rooms")
 	public ResponseEntity<List<Room>> roomList(){
 		List<Room> list = service.roomList();
 		return ResponseEntity.ok(list);
 	}
 	
-	@PostMapping("/save")
+	@PostMapping("/rooms")
 	public ResponseEntity<Room> saveRoom(@Valid @RequestBody Room room){
 		Room saved = service.saveRoom(room);
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
 	
-	@GetMapping("/findid/{id}")
+	@GetMapping("/rooms/{id}")
 	public ResponseEntity<Room> findRoomById(@PathVariable Long id){
 		Room found = service.findRoomById(id);
 		return ResponseEntity.ok(found);
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/rooms/{id}")
 	public ResponseEntity<Void> deleteRoom(@PathVariable Long id){
 		service.deleteRoomById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/updateroom/{id}")
-	public ResponseEntity<Room> updateRoom(@PathVariable Long id,@Valid Room room){
+	@PutMapping("/rooms/{id}")
+	public ResponseEntity<Room> updateRoom(@PathVariable Long id,@Valid @RequestBody Room room){
 		Room update = service.updateRoom(id, room);
 		return ResponseEntity.ok(update);
 	}
