@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,15 +26,16 @@ import lombok.Setter;
 
 @Entity 
 @Table(name = "customers") 
-@Getter @Setter @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Getter @Setter 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @SequenceGenerator(name = "seq_customers", sequenceName = "seq_customers", initialValue = 1, allocationSize = 1)
 public class Customer {
 	
-	@EqualsAndHashCode.Include
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_customers") 
 	@Column(name = "id", nullable = false)
 	@Setter(AccessLevel.NONE)
+	@EqualsAndHashCode.Include
 	private Long id;
 	
 	@NotBlank(message = "The name cannot be empty.") 
@@ -41,7 +43,7 @@ public class Customer {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Email(message = "Invalid e-mail adress format.") 
+	@Email(message = "Invalid e-mail address format.") 
 	@NotBlank(message = "E-mail cannot be empty.")
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
@@ -59,7 +61,7 @@ public class Customer {
 		createAt = LocalDateTime.now();
 	}
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "address_id", nullable = false)
 	@NotNull(message = "Address can not be null.")
 	private Address address;

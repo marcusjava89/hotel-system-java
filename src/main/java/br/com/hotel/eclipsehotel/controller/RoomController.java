@@ -51,7 +51,5 @@ public class RoomController {
 		Room update = service.updateRoom(id, room);
 		return ResponseEntity.ok(update);
 	}
-	
 
 }
-
