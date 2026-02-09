@@ -16,7 +16,8 @@ import br.com.hotel.eclipsehotel.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-@Service @RequiredArgsConstructor
+@Service 
+@RequiredArgsConstructor
 public class ReservationService {
 	
 	private final ReservationRepository repository;
@@ -59,7 +60,7 @@ public class ReservationService {
 		return days;
 	}
 	
-	/*This method do not return the rooms (the object) only the rooms number´s to make easy to the client read.*/
+	/*This method do not return the rooms (the object) only the rooms number's to make easy to the client read.*/
 	public List<Long> occupiedRooms(){
 		List<Room> rooms = new ArrayList<>();
 		

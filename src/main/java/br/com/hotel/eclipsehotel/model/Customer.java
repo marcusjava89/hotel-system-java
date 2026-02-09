@@ -23,10 +23,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity @Table(name = "customers") @Getter @Setter @EqualsAndHashCode
+@Entity 
+@Table(name = "customers") 
+@Getter @Setter @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @SequenceGenerator(name = "seq_customers", sequenceName = "seq_customers", initialValue = 1, allocationSize = 1)
 public class Customer {
 	
+	@EqualsAndHashCode.Include
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_customers") 
 	@Column(name = "id", nullable = false)
@@ -43,7 +46,7 @@ public class Customer {
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 	
-	@NotBlank(message = "We need a phone number to contact the costumer.") 
+	@NotBlank(message = "We need a phone number to contact the customer.") 
 	@Column(name = "phone", nullable = false)
 	private String phone;
 	

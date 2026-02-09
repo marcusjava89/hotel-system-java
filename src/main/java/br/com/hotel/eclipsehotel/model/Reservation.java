@@ -21,7 +21,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-@Entity @Table(name = "reservations") @Getter @Setter @EqualsAndHashCode
+@Entity 
+@Table(name = "reservations") 
+@Getter @Setter @EqualsAndHashCode
 @SequenceGenerator(name = "seq_reservation", sequenceName = "seq_reservation", initialValue = 1, allocationSize = 1)
 public class Reservation {
 	
@@ -41,7 +43,7 @@ public class Reservation {
 	@Column(name = "checkin", nullable = false)
 	private LocalDateTime checkin;
 	
-	@Column(name = "checkout", nullable = true)
+	@Column(name = "checkout", nullable = true) 
 	private LocalDateTime checkout; 
 	
 	@Enumerated(EnumType.STRING)

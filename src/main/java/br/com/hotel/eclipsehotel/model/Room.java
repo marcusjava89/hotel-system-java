@@ -20,7 +20,8 @@ import lombok.Setter;
 @SequenceGenerator(name = "seq_room", sequenceName = "seq_room", initialValue = 1, allocationSize = 1)
 public class Room {
 	
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_room") 
+	@Id 
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_room") 
 	@Column(name = "id", nullable = false)
 	@Setter(AccessLevel.NONE)
 	private Long id;

@@ -15,8 +15,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity @Table(name = "address") @Getter @Setter @EqualsAndHashCode
-@SequenceGenerator(name = "seq_address", sequenceName = "seq_addres", initialValue = 1, allocationSize = 1)
+@Entity @Table(name = "address") 
+@Getter @Setter @EqualsAndHashCode
+@SequenceGenerator(name = "seq_address", sequenceName = "seq_address", initialValue = 1, allocationSize = 1)
 public class Address {
 
 	@Id

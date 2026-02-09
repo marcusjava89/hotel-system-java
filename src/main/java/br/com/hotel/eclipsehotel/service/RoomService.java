@@ -11,8 +11,10 @@ import br.com.hotel.eclipsehotel.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class RoomService {
+	  
 	private final RoomRepository repository;
 	
 	public List<Room> roomList() {
