@@ -16,52 +16,32 @@ import br.com.hotel.eclipsehotel.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RestController @RequiredArgsConstructor
+@RestController 
+@RequiredArgsConstructor
 public class ReservationController {
 	private final ReservationService service;
 	
-	@PostMapping("/open")
+	@PostMapping("/reservations")
 	public ResponseEntity<Reservation> openReservation(@Valid @RequestBody Reservation reservation){
 		Reservation open = service.openReservation(reservation);
 		return ResponseEntity.status(HttpStatus.CREATED).body(open);
 	}
 	
-	@PutMapping("/close/{id}")
+	@PutMapping("/reservations/{id}/close")
 	public ResponseEntity<Reservation> closeReservation(@PathVariable Long id){
 		Reservation close = service.closeReservation(id);
 		return ResponseEntity.ok(close);
 	}
 	
-	@GetMapping("/time/{id}")
+	@GetMapping("/reservations/{id}/duration")
 	public ResponseEntity<Long> reservationTime(@PathVariable Long id){
 		long days = service.reservationTime(id);
 		return ResponseEntity.ok(days);
 	}
 	
-	@GetMapping("/occupied")
+	@GetMapping("/rooms/occupied")
 	public ResponseEntity<List<Long>> occupiedRooms(){
 		List<Long> rooms = service.occupiedRooms();
 		return ResponseEntity.ok(rooms);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
