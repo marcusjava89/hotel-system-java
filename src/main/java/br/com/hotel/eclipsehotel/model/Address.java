@@ -23,7 +23,8 @@ public class Address {
 	@Id
 	@GeneratedValue(generator = "seq_address", strategy = GenerationType.SEQUENCE)
 	@Setter(AccessLevel.NONE)
-	private Long id;
+	@Column(name = "id_address", nullable = false)
+	private Long idAddress;
 	
 	@NotBlank
 	@Pattern(regexp = "\\d{8}", message = "In Brazil a zip code has 8 digits.")

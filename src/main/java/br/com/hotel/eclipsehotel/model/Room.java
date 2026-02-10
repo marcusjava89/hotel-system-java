@@ -27,10 +27,10 @@ public class Room {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_room") 
-	@Column(name = "id", nullable = false)
+	@Column(name = "id_room", nullable = false)
 	@Setter(AccessLevel.NONE)
 	@EqualsAndHashCode.Include
-	private Long id;
+	private Long idRoom;
 	
 	@Column(name = "room_number", nullable = false, unique = true)
 	@Positive(message = "roomNumber must be posive.")

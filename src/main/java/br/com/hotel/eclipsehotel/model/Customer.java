@@ -33,10 +33,10 @@ public class Customer {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_customers") 
-	@Column(name = "id", nullable = false)
+	@Column(name = "id_customer", nullable = false)
 	@Setter(AccessLevel.NONE)
 	@EqualsAndHashCode.Include
-	private Long id;
+	private Long idCustomer;
 	
 	@NotBlank(message = "The name cannot be empty.") 
 	@Size(min = 3, max = 60) 
@@ -62,7 +62,7 @@ public class Customer {
 	}
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "address_id", nullable = false)
+	@JoinColumn(name = "id_address", nullable = false)
 	@NotNull(message = "Address can not be null.")
 	private Address address;
 	

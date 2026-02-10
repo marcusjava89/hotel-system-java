@@ -30,18 +30,18 @@ public class Reservation {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_reservation") 
-	@Column(name = "id", nullable = false)
+	@Column(name = "id_reservation", nullable = false)
 	@EqualsAndHashCode.Include
-	private Long id;
+	private Long idReservation;
 	
 	/*EAGER because we need to bring the customer from a reservation.*/
 	@ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-	@JoinColumn(name = "customer_id", nullable = false)
+	@JoinColumn(name = "id_customer", nullable = false)
 	private Customer customer;
 	
 	/*LAZY because we don't need bring the room from a reservation, only if we want.*/
 	@ManyToOne(cascade = {}, fetch = FetchType.LAZY)
-	@JoinColumn(name = "room_id", nullable = false)
+	@JoinColumn(name = "id_room", nullable = false)
 	private Room room;
 	
 	@Column(name = "checkin", nullable = false)
