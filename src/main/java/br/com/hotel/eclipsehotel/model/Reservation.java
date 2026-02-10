@@ -44,7 +44,7 @@ public class Reservation {
 	@JoinColumn(name = "id_room", nullable = false)
 	private Room room;
 	
-	@Column(name = "checkin", nullable = false)
+	@Column(name = "checkin", nullable = true)
 	private LocalDateTime checkin;
 	
 	@Column(name = "checkout", nullable = true) 
