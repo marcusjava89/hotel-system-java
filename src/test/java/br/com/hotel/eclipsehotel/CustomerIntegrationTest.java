@@ -232,7 +232,7 @@ public class CustomerIntegrationTest {
 
 		repository.saveAndFlush(customer1);
 		
-		mvc.perform(get("/findcustomer/"+customer1.getId())).andExpect(status().isOk()).
+		mvc.perform(get("/findcustomer/"+customer1.getIdCustomer())).andExpect(status().isOk()).
 		andExpect(jsonPath("$.name").value("Marcus")).andExpect(jsonPath("$.email").value("marcus@email.com"))
 		.andExpect(jsonPath("$.phone").value("(21)635268547"));
 	}
@@ -274,7 +274,7 @@ public class CustomerIntegrationTest {
 
 		repository.saveAndFlush(customer1);
 		
-		mvc.perform(delete("/deletecustomer/"+customer1.getId())).andExpect(status().isNoContent());
+		mvc.perform(delete("/deletecustomer/"+customer1.getIdCustomer())).andExpect(status().isNoContent());
 	}
 	
 	@Test
@@ -311,7 +311,7 @@ public class CustomerIntegrationTest {
 		customer2.setName("Hanna");
 		customer2.setAddress(address2);
 		
-		mvc.perform(put("/updatecustomer/"+customer1.getId()).content(mapper.writeValueAsString(customer2))
+		mvc.perform(put("/updatecustomer/"+customer1.getIdCustomer()).content(mapper.writeValueAsString(customer2))
 		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 		.andExpect(jsonPath("$.name").value("Hanna")).andExpect(jsonPath("$.email").value("hanna@email.com"));
 	}
@@ -377,7 +377,7 @@ public class CustomerIntegrationTest {
 		customer2.setName("Hanna");
 		customer2.setAddress(address2);
 		
-		mvc.perform(put("/updatecustomer/"+customer1.getId()).content(mapper.writeValueAsString(customer2))
+		mvc.perform(put("/updatecustomer/"+customer1.getIdCustomer()).content(mapper.writeValueAsString(customer2))
 		.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isConflict());
 	}
 	
