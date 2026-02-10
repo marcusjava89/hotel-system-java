@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_reservation") 
 	@Column(name = "id_reservation", nullable = false)
 	@EqualsAndHashCode.Include
+	@Setter(AccessLevel.NONE)
 	private Long idReservation;
 	
 	/*EAGER because we need to bring the customer from a reservation.*/
@@ -44,7 +46,7 @@ public class Reservation {
 	@JoinColumn(name = "id_room", nullable = false)
 	private Room room;
 	
-	@Column(name = "checkin", nullable = true)
+	@Column(name = "checkin", nullable = false)
 	private LocalDateTime checkin;
 	
 	@Column(name = "checkout", nullable = true) 

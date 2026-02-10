@@ -25,6 +25,8 @@ public class ReservationService {
 	@Transactional
 	public Reservation openReservation(Reservation reservation) {
 		reservation.setStatus(ReservationStatus.SCHEDULED);
+		/*checkout must be null, there is no checkout yet.*/
+		reservation.setCheckout(null);
 		Reservation opened = repository.saveAndFlush(reservation);
 		return opened;
 	}
