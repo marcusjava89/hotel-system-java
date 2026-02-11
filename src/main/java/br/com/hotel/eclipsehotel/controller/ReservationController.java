@@ -27,6 +27,12 @@ public class ReservationController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(open);
 	}
 	
+	@PutMapping("/reservations/{id}/start")
+	public ResponseEntity<Reservation> startReservation(@PathVariable Long id){
+		Reservation start = service.startResernvation(id);
+		return ResponseEntity.ok(start);
+	}
+	
 	@PutMapping("/reservations/{id}/close")
 	public ResponseEntity<Reservation> closeReservation(@PathVariable Long id){
 		Reservation close = service.closeReservation(id);

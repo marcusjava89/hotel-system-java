@@ -22,6 +22,7 @@ public class ReservationService {
 
 	private final ReservationRepository repository;
 
+	/*This method only creates a reservation.*/
 	@Transactional
 	public Reservation openReservation(Reservation reservation) {
 		reservation.setStatus(ReservationStatus.SCHEDULED);
@@ -29,6 +30,22 @@ public class ReservationService {
 		reservation.setCheckout(null);
 		Reservation opened = repository.saveAndFlush(reservation);
 		return opened;
+	}
+	
+	/*This method iniciates an existent reservartion.*/
+	@Transactional
+	public Reservation startResernvation(Long id) {
+		Reservation reservation = repository.findById(id).orElseThrow(() -> new ReservationNotFound(id));
+
+		if (!reservation.getStatus().equals(ReservationStatus.SCHEDULED)) {
+			throw new IllegalStateException("Reservation must be SCHEDULED to be started.");
+		}
+		
+		reservation.setStatus(ReservationStatus.IN_USE);
+		Reservation start = repository.saveAndFlush(reservation);
+
+		return start;
+		
 	}
 
 	@Transactional
