@@ -39,6 +39,12 @@ public class ReservationController {
 		return ResponseEntity.ok(canceled);
 	}
 	
+	@PutMapping("/reservations/{id}/absence")
+	public ResponseEntity<Reservation> absenceReservation(@PathVariable Long id){
+		Reservation absence = service.absenceReservation(id);
+		return ResponseEntity.ok(absence);
+	}
+	
 	@GetMapping("/reservations/{id}/duration")
 	public ResponseEntity<Long> reservationTime(@PathVariable Long id){
 		long days = service.reservationTime(id);

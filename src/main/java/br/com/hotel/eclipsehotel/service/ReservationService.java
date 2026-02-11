@@ -56,12 +56,31 @@ public class ReservationService {
 			throw new IllegalStateException("Reservation must be SCHEDULED to be canceled.");
 		}
 		
+		/*chekout in this case is the date of cancellation.*/
 		reservation.setCheckout(LocalDateTime.now());
 		reservation.setStatus(ReservationStatus.CANCELED);
 		Reservation canceled = repository.saveAndFlush(reservation);
 
 		return canceled;
 
+	}
+	
+	@Transactional
+	public Reservation absenceReservation(Long id) {
+		
+		Reservation reservation = repository.findById(id).orElseThrow(() -> new ReservationNotFound(id));
+		
+		if(!reservation.getStatus().equals(ReservationStatus.SCHEDULED)) {
+			throw new IllegalStateException("Reservation must be SCHEDULED for this action.");
+		}
+		
+		/*chekout in this case is the date that we change the status reservation.*/
+		reservation.setCheckout(LocalDateTime.now());
+		reservation.setStatus(ReservationStatus.ABSENCE);
+		Reservation absence = repository.saveAndFlush(reservation);
+		
+		return absence;
+		
 	}
 
 	public Long reservationTime(Long id) {
