@@ -33,6 +33,12 @@ public class ReservationController {
 		return ResponseEntity.ok(close);
 	}
 	
+	@PutMapping("/reservations/{id}/canceled")
+	public ResponseEntity<Reservation> canceledReservation(@PathVariable Long id){
+		Reservation canceled = service.canceledReservation(id);
+		return ResponseEntity.ok(canceled);
+	}
+	
 	@GetMapping("/reservations/{id}/duration")
 	public ResponseEntity<Long> reservationTime(@PathVariable Long id){
 		long days = service.reservationTime(id);
